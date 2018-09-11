@@ -31,6 +31,7 @@ class PostController extends Controller
             ->add('save', SubmitType::class, array('attr' =>  array('class' => 'btn btn-primary')))
 
             ->getForm();
+        $form -> handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
             $fname = $form['fname']->getData();
@@ -42,15 +43,15 @@ class PostController extends Controller
             $contact->setLname($lname);
             $contact->setEmail($email);
             $contact->setTelno($telno);
-
-            $em = $this.$this->getDoctrine()->getManager();
+            print_r($fname);
+            $em = $this->getDoctrine()->getManager();
             $em->persist($contact);
             $em->flush();
-            return this.$this->redirectToRoute('view_contact_route');
+            return $this->redirectToRoute('view_contact_route');
 
         }
 
-        $form -> handleRequest($request);
+
 
         return $this->render("pages/index.html.twig", [
             'form' => $form->createView()  ]);
