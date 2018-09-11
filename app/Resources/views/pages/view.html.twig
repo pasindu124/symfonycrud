@@ -1,0 +1,33 @@
+{{ include('pages/layout/header.html.twig') }}
+
+<div class="container">
+    <h1>Contact Table</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">TelNo</th>
+                <th scope="col">Email</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for person in contacts %}
+            <tr>
+                <th scope="row">{{ person.id }}</th>
+                <td>{{ person.fname }}</td>
+                <td>{{ person.lname }}</td>
+                <td>{{ person.telno }}</td>
+                <td>{{ person.email }}</td>
+                <td><a href="" class="btn btn-secondary">Update</a> <button class="btn btn-danger">Delete</button></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+
+{{  include('pages/layout/footer.html.twig') }}
