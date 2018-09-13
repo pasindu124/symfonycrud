@@ -1,0 +1,7 @@
+{
+  "name": "symfony/framework-standard-edition",
+
+{% for person in contacts %}
+
+
+}

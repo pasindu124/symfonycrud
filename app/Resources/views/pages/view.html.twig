@@ -2,6 +2,23 @@
 
 <div class="container">
     <h1>Contact Table</h1>
+
+    <div class="row">
+        <a href="{{ absolute_url(asset('')) }}post" class="btn btn-primary">Create</a>
+    </div>
+
+
+    {% for flashMessage in app.session.flashbag.get('message') %}
+        <div class="row">
+            <div class="alert alert-success" role="alert">
+                {{ flashMessage }}
+
+            </div>
+        </div>
+
+    {% endfor %}
+
+
     <table class="table">
         <thead>
             <tr>
@@ -21,7 +38,7 @@
                 <td>{{ person.lname }}</td>
                 <td>{{ person.telno }}</td>
                 <td>{{ person.email }}</td>
-                <td><a href="" class="btn btn-secondary">Update</a> <button class="btn btn-danger">Delete</button></td>
+                <td><a href="{{ absolute_url(asset('')) }}post/updatecontact/{{  person.id }}" class="btn btn-secondary">Update</a> <a href="{{ absolute_url(asset('')) }}post/deletecontact/{{  person.id }}" class="btn btn-danger">Delete</a></td>
             </tr>
         {% endfor %}
         </tbody>
