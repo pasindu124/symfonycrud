@@ -84,8 +84,20 @@ class PostController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($contact);
         $em->flush();
-        exit();
+        //exit();
 
+        $response = new Response(
+            'Content',
+            Response::HTTP_OK,
+            array('content-type' => 'text/html')
+        );
+
+        //$response->headers->set('Content-Type', 'application/json');
+
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->headers->set('Access-Control-Allow-Methods', 'GET,POST,PUT');
+        $response->headers->set('Access-Control-Allow-Headers', 'X-Header-One,X-Header-Two');
+        $response->send();
 
     }
     /**
