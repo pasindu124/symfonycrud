@@ -64,20 +64,79 @@ class PostController extends Controller
      * @Route("/post/insertdata", name="insert_post_route")
      */
 
-    public function insertDataAction(){
-        $foo = $_GET['emp'];
-        echo $foo;
-        //exit();
+    public function insertDataAction(Request $request){
+        $data = json_decode($request->getContent(), true);
 
-        $response = new Response(json_encode("oas"));
-        $response->headers->set('Content-Type', 'application/json');
+        $contact = new contact;
 
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-        $response->headers->set('Access-Control-Allow-Methods', 'GET,POST,PUT');
-        $response->headers->set('Access-Control-Allow-Headers', 'X-Header-One,X-Header-Two');
-        return $response;
+
+
+        $fname = $data['fname'];
+        $lname = $data['lname'];
+        $email = $data['email'];
+        $telno = $data['telno'];
+
+        $contact->setFname($fname);
+        $contact->setLname($lname);
+        $contact->setEmail($email);
+        $contact->setTelno($telno);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($contact);
+        $em->flush();
+        exit();
+
+
+    }
+    /**
+     * @Route("/post/updatedata", name="update_post_route")
+     */
+
+    public function updateDataAction(Request $request){
+        $data = json_decode($request->getContent(), true);
+
+
+
+
+        $id = $data['id'];
+        $fname = $data['fname'];
+        $lname = $data['lname'];
+        $email = $data['email'];
+        $telno = $data['telno'];
+
+        $em = $this->getDoctrine()->getManager();
+        $contact = $em->getRepository('AppBundle:contact')->find($id);
+
+        $contact->setFname($fname);
+        $contact->setLname($lname);
+        $contact->setEmail($email);
+        $contact->setTelno($telno);
+
+        $em->flush();
+        exit();
+
+
     }
 
+    /**
+     * @Route("/post/deletedata", name="delete_post_route")
+     */
+
+    public function deleteDataAction(Request $request){
+        $data = json_decode($request->getContent(), true);
+
+        $id = $data['id'];
+
+        $em = $this->getDoctrine()->getManager();
+        $entity = $em->getRepository('AppBundle:contact')->findOneBy(array('id' => $id));
+
+        if ($entity != null){
+            $em->remove($entity);
+            $em->flush();
+        }
+        exit();
+
+    }
 
     /**
      * @Route("/post/viewcontact", name="view_contact_route")
@@ -97,8 +156,8 @@ class PostController extends Controller
                         'id' => $e->getId(),
                         'fname' => $e->getFname(),
                         'lname' => $e->getLname(),
-                        'telno' => $e->getEmail(),
-                        'email' => $e->getTelno()
+                        'telno' => $e->getTelno(),
+                        'email' => $e->getEmail()
                     );
 
 
