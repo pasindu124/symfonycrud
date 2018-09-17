@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 class PostController extends Controller
 {
@@ -60,8 +60,10 @@ class PostController extends Controller
             'form' => $form->createView()  ]);
     }
 
+
+
     /**
-     * @Route("/post/insertdata", name="insert_post_route")
+     * @Route("/api/insertdata", name="insert_post_route")
      */
 
     public function insertDataAction(Request $request){
@@ -84,24 +86,13 @@ class PostController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($contact);
         $em->flush();
-        //exit();
 
-        $response = new Response(
-            'Content',
-            Response::HTTP_OK,
-            array('content-type' => 'text/html')
-        );
-
-        //$response->headers->set('Content-Type', 'application/json');
-
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-        $response->headers->set('Access-Control-Allow-Methods', 'GET,POST,PUT');
-        $response->headers->set('Access-Control-Allow-Headers', 'X-Header-One,X-Header-Two');
-        $response->send();
+        $response = new Response();
+        return $response;
 
     }
     /**
-     * @Route("/post/updatedata", name="update_post_route")
+     * @Route("/api/updatedata", name="update_post_route")
      */
 
     public function updateDataAction(Request $request){
@@ -125,16 +116,19 @@ class PostController extends Controller
         $contact->setTelno($telno);
 
         $em->flush();
-        exit();
+
+        $response = new Response();
+        return $response;
 
 
     }
 
     /**
-     * @Route("/post/deletedata", name="delete_post_route")
+     * @Route("/api/deletedata", name="delete_post_route")
      */
 
     public function deleteDataAction(Request $request){
+
         $data = json_decode($request->getContent(), true);
 
         $id = $data['id'];
@@ -146,12 +140,15 @@ class PostController extends Controller
             $em->remove($entity);
             $em->flush();
         }
-        exit();
+
+        $response = new Response();
+        return $response;
 
     }
 
+
     /**
-     * @Route("/post/viewcontact", name="view_contact_route")
+     * @Route("/api/viewcontact", name="view_contact_route")
      */
     public function viewContact(){
         $contacts = $this->getDoctrine()->getRepository('AppBundle:contact')->findAll();
@@ -177,24 +174,14 @@ class PostController extends Controller
             }
 
         $response = new Response(json_encode($data));
-        $response->headers->set('Content-Type', 'application/json');
-
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-        $response->headers->set('Access-Control-Allow-Methods', 'GET,POST,PUT');
-        $response->headers->set('Access-Control-Allow-Headers', 'X-Header-One,X-Header-Two');
         return $response;
 
 
-
-
-
-        //exit();
-        //return $this->render("pages/view.html.twig", ['contacts' => $contacts]);
     }
 
 
     /**
-     * @Route("/post/deletecontact/{id}", name="delete_contact_route")
+     * @Route("/api/deletecontact/{id}", name="delete_contact_route")
      */
     public function deleteContact($id){
         $em = $this->getDoctrine()->getManager();
